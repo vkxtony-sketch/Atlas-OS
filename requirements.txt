@@ -1,0 +1,6 @@
+# Atlas OS Dependencies
+
+# Currently minimal - designed for local extensibility
+
+uuid
+typing-extensions
