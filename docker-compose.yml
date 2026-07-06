@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  atlas-os:
+    build: .
+    container_name: atlas_os
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app
+    command: ["python", "main.py", "build a sample goal"]
