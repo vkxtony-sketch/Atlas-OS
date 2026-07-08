@@ -29,7 +29,7 @@ def run_goal(req: GoalRequest):
 
 @app.get("/memory")
 def get_memory():
-    return executive.memory.store
+    return executive.memory.data
 
 @app.get("/history")
 def get_history():

@@ -10,33 +10,34 @@ Example:
     python main.py "design a landing page"
 """
 
+import json
 import sys
+
 from core.executive_ai import ExecutiveAI
 
 
-def main():
+def main() -> int:
     if len(sys.argv) < 2:
-        print("Usage: python main.py \"your goal\"")
-        return
+        print('Usage: python main.py "your goal"')
+        return 1
 
     goal = " ".join(sys.argv[1:])
 
-    print("\n🚀 Atlas OS Starting...\n")
-    print(f"🎯 Goal: {goal}\n")
+    print("\nAtlas OS Starting...\n")
+    print(f"Goal: {goal}\n")
 
     executive = ExecutiveAI()
     result = executive.run_goal(goal)
 
-    print("\n===== ATLAS OS RESULT =====\n")
-    print("📌 Planner Output:", result["planner"])
-    print("\n📚 Research Output:", result["research"])
-    print("\n💻 Coding Output:", result["coding"])
-    print("\n🧠 Critic Output:", result["critic"])
-    print("\n🧩 Consensus:", result["consensus"])
-    print("\n✅ Status:", result["status"])
+    print("===== ATLAS OS RESULT =====\n")
+    for key in ("planner", "research", "coding", "critic", "consensus"):
+        print(f"{key.upper()}:")
+        print(json.dumps(result[key], indent=2, ensure_ascii=False))
+        print()
 
-    print("\n===========================\n")
+    print(f"STATUS: {result['status']}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

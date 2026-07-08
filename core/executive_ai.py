@@ -8,44 +8,70 @@ The Executive AI is the top-level orchestrator responsible for:
 - Iterating until convergence
 """
 
+from uuid import uuid4
 from typing import Any, Dict, List
+
+from core.consensus_engine import ConsensusEngine
+from core.memory import MemoryStore
+from core.task import Task
+
 
 class ExecutiveAI:
     def __init__(self):
-        self.task_queue: List[Dict[str, Any]] = []
-        self.results: List[Dict[str, Any]] = []
+        from agents import CodingAgent, CriticAgent, PlannerAgent, ResearchAgent
 
-    def submit_goal(self, goal: str) -> str:
-        task = {
-            "id": len(self.task_queue) + 1,
-            "goal": goal,
-            "status": "queued"
-        }
-        self.task_queue.append(task)
-        return f"Goal accepted: {task['id']}"
+        self.planner = PlannerAgent()
+        self.researcher = ResearchAgent()
+        self.coder = CodingAgent()
+        self.critic = CriticAgent()
+        self.consensus = ConsensusEngine()
+        self.memory = MemoryStore()
+        self.task_history: List[Task] = []
 
-    def decompose(self, goal: str) -> List[Dict[str, Any]]:
-        return [
-            {"task": "analyze", "input": goal},
-            {"task": "plan", "input": goal},
-            {"task": "execute", "input": goal}
+    def run_goal(self, goal: str) -> Dict[str, Any]:
+        task = Task(id=uuid4().hex, goal=goal)
+        task.mark_running()
+
+        planner_output = self.planner.run(task)
+        research_output = self.researcher.run(task)
+        coding_output = self.coder.run(task)
+
+        task.metadata.update(
+            {
+                "planner_output": planner_output,
+                "research_output": research_output,
+                "coding_output": coding_output,
+            }
+        )
+        critic_output = self.critic.run(task)
+
+        consensus_input = [
+            {"result": planner_output.get("status", "planned")},
+            {"result": research_output.get("status", "researched")},
+            {"result": coding_output.get("status", "generated")},
+            {"result": critic_output.get("verdict", "review")},
         ]
+        consensus_output = self.consensus.evaluate(consensus_input)
 
-    def run_cycle(self, goal: str) -> Dict[str, Any]:
-        steps = self.decompose(goal)
-        outputs = []
-
-        for step in steps:
-            outputs.append({
-                "step": step["task"],
-                "result": f"Processed {step['input']} via {step['task']}"
-            })
-
-        final = {
-            "goal": goal,
-            "outputs": outputs,
-            "status": "complete"
+        result = {
+            "planner": planner_output,
+            "research": research_output,
+            "coding": coding_output,
+            "critic": critic_output,
+            "consensus": consensus_output,
+            "status": "complete",
         }
 
-        self.results.append(final)
-        return final
+        task.metadata["consensus_output"] = consensus_output
+        task.mark_complete(result)
+        self.task_history.append(task)
+        self.memory.add(
+            {
+                "task_id": task.id,
+                "goal": goal,
+                "status": task.status,
+                "result": result,
+            }
+        )
+
+        return result

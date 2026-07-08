@@ -20,7 +20,13 @@ class ConsensusEngine:
         - Attach confidence score
         """
         if not results:
-            return {"status": "empty", "result": None}
+            return {
+                "status": "empty",
+                "result": None,
+                "consensus_result": None,
+                "confidence": 0.0,
+                "total_votes": 0,
+            }
 
         frequency: Dict[str, int] = {}
 
@@ -31,9 +37,11 @@ class ConsensusEngine:
         best_result = max(frequency.items(), key=lambda x: x[1])
 
         consensus = {
+            "result": best_result[0],
             "consensus_result": best_result[0],
             "confidence": best_result[1] / len(results),
-            "total_votes": len(results)
+            "total_votes": len(results),
+            "status": "consensus",
         }
 
         self.history.append(consensus)
