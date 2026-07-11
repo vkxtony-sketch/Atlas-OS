@@ -7,7 +7,7 @@ The Planner Agent is responsible for:
 - Coordinating dependencies between steps
 """
 
-from typing import Any, Dict, List
+from typing import Any, Dict
 from core.agent import Agent
 from core.task import Task
 

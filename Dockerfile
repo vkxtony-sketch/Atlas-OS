@@ -9,4 +9,4 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Default command runs the CLI
-CMD ["python", "main.py", "\"build a sample goal\""]
+CMD ["python", "main.py", "build a sample goal"]

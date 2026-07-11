@@ -65,4 +65,4 @@ if mode == "Autonomous":
 
 # Memory viewer
 st.sidebar.subheader("Memory")
-st.json(executive.memory.store)
+st.json(executive.memory.data)

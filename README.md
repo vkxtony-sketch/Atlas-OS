@@ -46,4 +46,4 @@ Long-term structured memory that stores:
 - [ ] Build local-first deployment mode
 
 ## Status
-Early experimental stage. No execution backend implemented yet.
+Working mock execution backend is available for the CLI, API, and UI.

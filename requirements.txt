@@ -1,6 +1,7 @@
 # Atlas OS Dependencies
 
-# Currently minimal - designed for local extensibility
-
-uuid
+fastapi>=0.110
+pydantic>=2.6
+streamlit>=1.33
 typing-extensions
+uvicorn>=0.29
