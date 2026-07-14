@@ -34,3 +34,7 @@ yarn-error.log*
 atlas_state/
 agent_memory/
 execution_cache/
+atlas_memory.json
+atlas_shared_memory.json
+atlas_knowledge/
+atlas_audit.log
