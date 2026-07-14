@@ -1,0 +1,26 @@
+# Build context exclusions for Atlas OS container image.
+
+.git
+.gitignore
+.github
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Runtime artifacts
+.env
+*.key
+*.pem
+atlas_state/
+agent_memory/
+execution_cache/
+
+# Local-only convenience
+Atlas-OS-improved (4).zip
+
+# Editor
+.vscode
+.idea

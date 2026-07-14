@@ -1,0 +1,6 @@
+[plugin]
+name = "git_summary"
+version = "0.1.0"
+entry = "git_summary.plugin:register"
+description = "Summarises local git state via read-only GitConnector."
+permissions = ["terminal.run"]
